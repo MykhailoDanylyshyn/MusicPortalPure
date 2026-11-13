@@ -1,0 +1,4 @@
+{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": { "MusicPortal.WebApi": { "commandName": "Project", "dotnetRunMessages": true, "launchBrowser": false, "applicationUrl": "https://localhost:7001;http://localhost:5001", "environmentVariables": { "ASPNETCORE_ENVIRONMENT": "Development" } } }
+}

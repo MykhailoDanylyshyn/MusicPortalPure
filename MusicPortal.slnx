@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="MusicPortal.Domain/MusicPortal.Domain.csproj" />
+  <Project Path="MusicPortal.Application/MusicPortal.Application.csproj" />
+  <Project Path="MusicPortal.Infrastructure/MusicPortal.Infrastructure.csproj" />
+  <Project Path="MusicPortal/MusicPortal.csproj" />
+  <Project Path="MusicPortal.WebApi/MusicPortal.WebApi.csproj" />
+  <Project Path="MusicPortal.AdminSPA/MusicPortal.AdminSPA.csproj" />
+</Solution>

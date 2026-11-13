@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Music Portal — Admin SPA</title>
+  <link rel="stylesheet" href="/css/admin-spa.css">
+  <style>
+    body{background:#100d1d;color:#f4efff;font-family:Arial,sans-serif;margin:0;padding:32px}
+    .spa-login{max-width:430px;margin:8vh auto;background:#1d1730;border:1px solid #49366b;border-radius:18px;padding:28px;box-shadow:0 20px 70px #0006}
+    .spa-login h1{margin-top:0}.spa-login label{display:block;margin:16px 0 6px}.spa-login input{box-sizing:border-box;width:100%;padding:12px;border-radius:8px;border:1px solid #66518a;background:#120e20;color:white}
+    .spa-login button,.spa-logout{margin-top:18px;padding:11px 18px;border:0;border-radius:8px;background:#b45bdf;color:white;font-weight:bold;cursor:pointer}
+    #loginMessage{margin-top:12px;color:#ff9aaf}.spa-top{max-width:1200px;margin:0 auto 18px;display:flex;justify-content:flex-end}
+    .admin-spa{max-width:1200px;margin:0 auto}.admin-spa[hidden],.spa-login[hidden]{display:none!important}
+  </style>
+</head>
+<body>
+  <section id="loginPanel" class="spa-login">
+    <p class="admin-eyebrow">MUSIC / CONTROL CENTER</p>
+    <h1>Вхід адміністратора</h1>
+    <form id="loginForm">
+      <label for="loginUsername">Логін</label><input id="loginUsername" name="username" autocomplete="username" required>
+      <label for="loginPassword">Пароль</label><input id="loginPassword" name="password" type="password" autocomplete="current-password" required>
+      <button type="submit">Увійти</button>
+    </form>
+    <p id="loginMessage" role="alert"></p>
+  </section>
+  <div id="spaShell" hidden>
+    <div class="spa-top"><button id="logoutButton" class="spa-logout" type="button">Вийти</button></div>
+    <section class="admin-spa" id="adminSpa" aria-label="Панель адміністратора">
+      <div class="admin-heading"><div><p class="admin-eyebrow">MUSIC / CONTROL CENTER</p><h1>Панель адміністратора</h1><p class="admin-subtitle">Керування користувачами, виконавцями та жанрами без перезавантаження сторінки.</p></div><span class="admin-status"><span></span> Адміністратор</span></div>
+      <div id="adminMessage" class="admin-message" role="status" aria-live="polite" hidden></div>
+      <div class="admin-toolbar"><div class="admin-tabs" role="tablist" aria-label="Розділи керування">
+        <button class="admin-tab active" type="button" data-resource="users" role="tab" aria-selected="true">Користувачі</button>
+        <button class="admin-tab" type="button" data-resource="artists" role="tab" aria-selected="false">Виконавці</button>
+        <button class="admin-tab" type="button" data-resource="genres" role="tab" aria-selected="false">Жанри</button>
+      </div><div class="admin-actions"><input id="adminSearch" class="admin-search" type="search" placeholder="Пошук у списку…" aria-label="Пошук"><button id="addItemButton" class="admin-primary" type="button">＋ Додати</button></div></div>
+      <div class="admin-table-wrap"><div id="adminLoading" class="admin-loading">Завантаження даних…</div><table class="admin-table" id="adminTable" hidden><thead id="adminTableHead"></thead><tbody id="adminTableBody"></tbody></table><div id="adminEmpty" class="admin-empty" hidden>За вашим запитом нічого не знайдено.</div></div>
+      <section id="adminEditor" class="admin-editor" hidden aria-labelledby="editorTitle"><div class="admin-editor-heading"><div><p class="admin-eyebrow">DATA EDITOR</p><h2 id="editorTitle">Новий запис</h2></div><button id="closeEditorButton" class="admin-icon-button" type="button" aria-label="Закрити">×</button></div>
+        <form id="adminForm" class="admin-form"><div id="adminFormFields" class="admin-form-grid"></div><div class="admin-form-actions"><button class="admin-primary" type="submit">Зберегти</button><button id="cancelEditorButton" class="admin-secondary" type="button">Скасувати</button></div></form>
+      </section>
+      <p class="admin-footnote">Клієнт і REST API працюють на різних origins. Обмін даними виконується через Fetch API та CORS.</p>
+    </section>
+  </div>
+  <script src="/js/api-config.js"></script>
+  <script src="/js/admin-spa.js"></script>
+</body></html>

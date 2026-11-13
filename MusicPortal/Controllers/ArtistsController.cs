@@ -1,0 +1,59 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MusicPortal.Application.DTO;
+using MusicPortal.Application.Interfaces;
+
+namespace MusicPortal.Controllers;
+
+public class ArtistsController(IArtistService service) : Controller
+{
+    public async Task<IActionResult> Index() => View(await service.GetAllArtists());
+    [Authorize(Policy = "ApprovedUser")]
+    public IActionResult Create() => View(new ArtistDTO { Name = string.Empty });
+    [Authorize(Policy = "ApprovedUser")]
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(ArtistDTO model)
+    {
+        if (!ModelState.IsValid) return View(model);
+        await service.CreateArtist(model);
+        TempData["Success"] = "Виконавця додано.";
+        return RedirectToAction(nameof(Index));
+    }
+    [Authorize(Policy = "ApprovedUser")]
+    public async Task<IActionResult> Edit(int id)
+    {
+        var item = await service.GetArtist(id);
+        return item == null ? NotFound() : View(item);
+    }
+    [Authorize(Policy = "ApprovedUser")]
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, ArtistDTO model)
+    {
+        if (id != model.Id) return BadRequest();
+        if (!ModelState.IsValid) return View(model);
+        await service.UpdateArtist(model);
+        TempData["Success"] = "Дані виконавця оновлено.";
+        return RedirectToAction(nameof(Index));
+    }
+    [Authorize(Policy = "ApprovedUser")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var item = await service.GetArtist(id);
+        return item == null ? NotFound() : View(item);
+    }
+    [Authorize(Policy = "ApprovedUser")]
+    [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var item = await service.GetArtist(id);
+        if (item == null) return NotFound();
+        if (item.RecordCount > 0)
+        {
+            TempData["Error"] = $"Не можна видалити виконавця: до нього прив'язано композицій — {item.RecordCount}.";
+            return RedirectToAction(nameof(Index));
+        }
+        await service.DeleteArtist(id);
+        TempData["Success"] = "Виконавця видалено.";
+        return RedirectToAction(nameof(Index));
+    }
+}
